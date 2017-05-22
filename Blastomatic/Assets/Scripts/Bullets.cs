@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class Bullets : MonoBehaviour {
 
+	public int hitPointDamage = 1;
+
 	// Use this for initialization
 	void Start () {
-		
+		Destroy (this.gameObject, 1.5f);
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+	void OnTriggerEnter (Collider other){
+		if (other.tag == "Player") {
+			other.GetComponent<Shooting> ().TakeDamage (hitPointDamage);
+			Destroy (this.gameObject);
+		}
 	}
 }
