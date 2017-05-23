@@ -14,7 +14,7 @@ public class Bullets : MonoBehaviour {
 	// Update is called once per frame
 	void OnTriggerEnter (Collider other){
 		if (other.tag == "Player") {
-			other.GetComponent<Shooting> ().TakeDamage (hitPointDamage);
+			other.GetComponent<PlayerController> ().TakeDamage (hitPointDamage);
 			Destroy (this.gameObject);
 		}
 	}

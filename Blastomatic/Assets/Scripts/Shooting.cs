@@ -6,11 +6,6 @@ using XboxCtrlrInput;
 public class Shooting : MonoBehaviour {
 
 	public XboxController controller;
-
-	//Identifies the player hit points
-
-	public float hitPoints = 3;
-
 	//Identifies Bullet prefab and transform
 
 	public Transform bulletSpawnPosition;
@@ -20,10 +15,7 @@ public class Shooting : MonoBehaviour {
 
 	private float shootingTimer;
 	public float timeBetweenShots = 1.00f;
-
-	public void TakeDamage(int damageToTake) {
-		hitPoints = hitPoints - damageToTake;
-	}
+	public float bulletSpeed = 30;
 
 	// Use this for initialization
 	void Start () {
@@ -42,13 +34,16 @@ public class Shooting : MonoBehaviour {
 		//Controls the use of shooting bullets from the player using the Bullet Prefab
 		if (XCI.GetAxis (XboxAxis.RightTrigger, controller) > 0.1f) {
 			if (Time.time - shootingTimer > timeBetweenShots) {
-				GameObject GameObject = Instantiate(bulletPrefab, bulletSpawnPosition.position, Quaternion.identity) as GameObject;
+				GameObject GO = Instantiate (bulletPrefab, bulletSpawnPosition.position, transform.rotation) as GameObject;
 
-				GameObject GO = Instantiate (bulletPrefab, bulletSpawnPosition.position, Quaternion.identity) as GameObject;
+				GO.GetComponent<Rigidbody> ().AddForce (transform.forward * bulletSpeed, ForceMode.Impulse);
 
-				GO.GetComponent<Rigidbody> ().AddForce (transform.forward * 20, ForceMode.Impulse);
 				Destroy (GO, 3);
 				shootingTimer = Time.time;
+
+			/*GameObject GO = Instantiate (bulletPrefab, bulletSpawnPosition.position, Quaternion.identity) as GameObject;
+
+				GO.GetComponent<Rigidbody> ().AddForce (transform.forward * bulletSpeed, ForceMode.Impulse);*/
 			}
 		}
 	}

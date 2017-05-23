@@ -9,9 +9,12 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody rigidBody;
 	public XboxController controller;
 
+	public int hitPoints = 5;
+	public int maxHitPoints = 5;
+
 	//Stores Max/min movement speeds
 
-	public float maxSpeed = 60;
+	public float maxSpeed = 40;
 	public float movementSpeed = 10;
 
 	//Stored info on where the player spawns
@@ -19,13 +22,18 @@ public class PlayerController : MonoBehaviour {
 	public Quaternion startingRotation;
 	public Vector3 startingPosition;
 
-	//Identifies the player hit points
-
-	public float hitPoints = 3;
-
+	//Used to calculate damage
+	public void TakeDamage(int damageToTake) {
+		hitPoints = hitPoints - damageToTake;
+	}
+		
 	// Use this for initialization
 	void Start () {
 		rigidBody = GetComponent<Rigidbody> ();
+
+		//Assigns a starting position for the Players
+		startingRotation = transform.rotation;
+		startingPosition = transform.position;
 	}
 
 	//Used to remember previous rotation of Player
@@ -36,6 +44,11 @@ public class PlayerController : MonoBehaviour {
 	{
 		//Controls the constant rotation if player is presently rotating
 		RotatePlayer ();
+
+		if (hitPoints <= 0) {
+			ResetPlayer ();
+			hitPoints = maxHitPoints;
+		}
 	}
 	void FixedUpdate (){
 		//Controls the constant movement of the player if the left stick is being used
@@ -79,4 +92,12 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
+	//Used to reset player position to spawn upon death
+	void ResetPlayer ()
+	{
+		transform.position = startingPosition;
+		transform.rotation = startingRotation;
+		GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
+		GetComponent<Rigidbody> ().velocity = Vector3.zero;
+	}
 }
