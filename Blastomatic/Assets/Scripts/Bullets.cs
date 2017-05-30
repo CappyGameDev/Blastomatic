@@ -17,5 +17,8 @@ public class Bullets : MonoBehaviour {
 			other.GetComponent<PlayerController> ().TakeDamage (hitPointDamage);
 			Destroy (this.gameObject);
 		}
+			else if (other.tag == "Walls") {
+				Destroy (this.gameObject);
+			}
+		}
 	}
-}
