@@ -39,7 +39,7 @@ public class Shooting : MonoBehaviour {
 				GO.GetComponent<Rigidbody> ().AddForce (transform.forward * bulletSpeed, ForceMode.Impulse);
 
 				Destroy (GO, 3);
-				shootingTimer = Time.deltaTime;
+				shootingTimer = Time.time;
 
 			/*GameObject GO = Instantiate (bulletPrefab, bulletSpawnPosition.position, Quaternion.identity) as GameObject;
 

@@ -5,12 +5,16 @@ using XboxCtrlrInput;
 
 public class PlayerController : MonoBehaviour {
 
+	[HideInInspector]
+	public GameObject gameManager;
+
 	//Identifies Controller Support
 	private Rigidbody rigidBody;
 	public XboxController controller;
 
 	public int hitPoints = 5;
 	public int maxHitPoints = 5;
+	public int scoreValue = 1;
 
 	//Stores Max/min movement speeds
 
@@ -29,6 +33,9 @@ public class PlayerController : MonoBehaviour {
 		
 	// Use this for initialization
 	void Start () {
+
+		gameManager = GameObject.FindGameObjectWithTag ("GameController");
+
 		rigidBody = GetComponent<Rigidbody> ();
 
 		//Assigns a starting position for the Players
@@ -46,8 +53,15 @@ public class PlayerController : MonoBehaviour {
 		RotatePlayer ();
 
 		if (hitPoints <= 0) {
-			ResetPlayer ();
-			hitPoints = maxHitPoints;
+			if (this.gameObject.tag == "PinkPlayer") {
+				gameManager.GetComponent<GameController>().AddScoreBlue (scoreValue);
+				ResetPlayer ();
+				hitPoints = maxHitPoints;
+			} else if (this.gameObject.tag == "BluePlayer") {
+				gameManager.GetComponent<GameController>().AddScorePink (scoreValue);
+				ResetPlayer ();
+				hitPoints = maxHitPoints;
+			}
 		}
 	}
 	void FixedUpdate (){
@@ -92,7 +106,7 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
-	//Used to reset player position to spawn upon death
+	//Used to reset player position to spawn upon 'death'
 	void ResetPlayer ()
 	{
 		transform.position = startingPosition;
