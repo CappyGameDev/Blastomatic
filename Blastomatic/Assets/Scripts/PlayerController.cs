@@ -34,8 +34,10 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+		//References the Game Controller Script
 		gameManager = GameObject.FindGameObjectWithTag ("GameController");
 
+		//Used to identify the Rigidbody on Players
 		rigidBody = GetComponent<Rigidbody> ();
 
 		//Assigns a starting position for the Players
