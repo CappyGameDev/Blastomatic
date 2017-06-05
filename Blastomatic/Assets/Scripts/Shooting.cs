@@ -8,6 +8,9 @@ public class Shooting : MonoBehaviour {
 	//Used to give a certain controller use of a player
 	public XboxController controller;
 
+	//References the Game controller Script to the Shooting Script
+	public GameObject gameManager;
+
 	//Identifies Bullet prefab and transform
 	public Transform bulletSpawnPosition;
 	public GameObject bulletPrefab;
@@ -32,21 +35,23 @@ public class Shooting : MonoBehaviour {
 	}
 
 	private void FireGun(){
-
+	
+		if (gameManager.GetComponent<GameController> ().gameOver == false) {
 		//Controls the use of shooting bullets from the player using the Bullet Prefab
 		if (XCI.GetAxis (XboxAxis.RightTrigger, controller) > 0.1f) {
-			if (Time.time - shootingTimer > timeBetweenShots) {
-				GameObject GO = Instantiate (bulletPrefab, bulletSpawnPosition.position, transform.rotation) as GameObject;
+				if (Time.time - shootingTimer > timeBetweenShots) {
+					GameObject GO = Instantiate (bulletPrefab, bulletSpawnPosition.position, transform.rotation) as GameObject;
 
-				GO.GetComponent<Rigidbody> ().AddForce (transform.forward * bulletSpeed, ForceMode.Impulse);
+					GO.GetComponent<Rigidbody> ().AddForce (transform.forward * bulletSpeed, ForceMode.Impulse);
 
-				Destroy (GO, 3);
-				shootingTimer = Time.deltaTime;
+					Destroy (GO, 3);
+					shootingTimer = Time.time;
 
-				//Broken code which caused double spawning of bullets
-			/*GameObject GO = Instantiate (bulletPrefab, bulletSpawnPosition.position, Quaternion.identity) as GameObject;
+					//Broken code which caused double spawning of bullets
+					/*GameObject GO = Instantiate (bulletPrefab, bulletSpawnPosition.position, Quaternion.identity) as GameObject;
 
 				GO.GetComponent<Rigidbody> ().AddForce (transform.forward * bulletSpeed, ForceMode.Impulse);*/
+				}
 			}
 		}
 	}

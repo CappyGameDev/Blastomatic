@@ -5,20 +5,21 @@ using XboxCtrlrInput;
 
 public class PlayerController : MonoBehaviour {
 
-	[HideInInspector]
+	//Links the Game Controller to the Player Controller
 	public GameObject gameManager;
 
 	//Identifies Controller Support
 	private Rigidbody rigidBody;
 	public XboxController controller;
 
+	//Identifies values for Player Health and score calculation
 	public int hitPoints = 5;
 	public int maxHitPoints = 5;
 	public int scoreValue = 1;
 
 	//Stores Max/min movement speeds
 
-	public float maxSpeed = 40;
+	public float maxSpeed = 20;
 	public float movementSpeed = 10;
 
 	//Stored info on where the player spawns
@@ -72,40 +73,40 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void MovePlayer (){
-		
-		//Allows for 360 Degrees rotation on the Left Stick on X & Z Axis'
-		float axisX = XCI.GetAxis(XboxAxis.LeftStickX, controller);
-		float axisZ = XCI.GetAxis(XboxAxis.LeftStickY, controller);
 
-		Vector3 movement = new Vector3 (axisX, 0, axisZ);
+		if (gameManager.GetComponent<GameController> ().gameOver == false) {
+			//Allows for 360 Degrees rotation on the Left Stick on X & Z Axis'
+			float axisX = XCI.GetAxis (XboxAxis.LeftStickX, controller);
+			float axisZ = XCI.GetAxis (XboxAxis.LeftStickY, controller);
 
-		rigidBody.AddForce (movement * movementSpeed);
+			Vector3 movement = new Vector3 (axisX, 0, axisZ);
 
-		//Makes sure the player cannot go faster than the max Speed
+			rigidBody.AddForce (movement * movementSpeed);
+			//Makes sure the player cannot go faster than the max Speed
 
-		if (rigidBody.velocity.magnitude > maxSpeed) {
-			rigidBody.velocity = rigidBody.velocity.normalized * maxSpeed;
+			if (rigidBody.velocity.magnitude > maxSpeed) {
+				rigidBody.velocity = rigidBody.velocity.normalized * maxSpeed;
+			}
 		}
 	}
-
 	private void RotatePlayer ()
 	{
+		if (gameManager.GetComponent<GameController> ().gameOver == false) {
+			//Allows for 360 Degrees rotation on the Right Stick on X & Y Axis'
+			float rotateAxisX = XCI.GetAxis (XboxAxis.RightStickX, controller);
+			float rotateAxisZ = XCI.GetAxis (XboxAxis.RightStickY, controller);
 
-		//Allows for 360 Degrees rotation on the Right Stick on X & Y Axis'
-		float rotateAxisX = XCI.GetAxis (XboxAxis.RightStickX, controller);
-		float rotateAxisZ = XCI.GetAxis (XboxAxis.RightStickY, controller);
+			Vector3 directionVector = new Vector3 (rotateAxisX, 0, rotateAxisZ);
 
-		Vector3 directionVector = new Vector3 (rotateAxisX, 0, rotateAxisZ);
+			//Checks to see if the Right stick is being used. If not, player will remain in current rotation
+			if (directionVector.magnitude < 0.1f) {
+				directionVector = previousRotationDirection;
+			}
 
-		//Checks to see if the Right stick is being used. If not, player will remain in current rotation
-		if (directionVector.magnitude < 0.1f) {
-			directionVector = previousRotationDirection;
+			directionVector = directionVector.normalized;
+			previousRotationDirection = directionVector;
+			transform.rotation = Quaternion.LookRotation (directionVector);
 		}
-
-		directionVector = directionVector.normalized;
-		previousRotationDirection = directionVector;
-		transform.rotation = Quaternion.LookRotation (directionVector);
-
 	}
 
 	//Used to reset player position to spawn upon 'death'
