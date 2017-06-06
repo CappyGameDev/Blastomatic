@@ -31,7 +31,7 @@ public class GameController : MonoBehaviour {
 		blueText.text = "";
 		blueScore = 0;
 		pinkScore = 0;
-		maxScore = 3;
+		maxScore = 5;
 		UpdateScore ();
 		gameOver = false;
 		gameOverBlue.text = "";
