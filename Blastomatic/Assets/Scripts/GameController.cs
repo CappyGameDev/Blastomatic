@@ -31,7 +31,7 @@ public class GameController : MonoBehaviour {
 		blueText.text = "";
 		blueScore = 0;
 		pinkScore = 0;
-		maxScore = 10;
+		maxScore = 3;
 		UpdateScore ();
 		gameOver = false;
 		gameOverBlue.text = "";
@@ -77,9 +77,9 @@ public class GameController : MonoBehaviour {
 	public void BlueGameOver () {
 
 		if (blueScore == maxScore) {
-			gameOverBlue.text = "Game Over, Blue Player Wins!";
+			gameOverBlue.text = "Game Over, Yellow Player Wins!";
 			restartBlue.text = "Press R to play again";
-			Debug.Log("Game Over, Blue Player Wins");
+			Debug.Log("Game Over, Yellow Player Wins");
 			gameOver = true;
 		}
 	}

@@ -5,22 +5,37 @@ using XboxCtrlrInput;
 
 public class PlayerController : MonoBehaviour {
 
+	[HideInInspector]
 	//Links the Game Controller to the Player Controller
 	public GameObject gameManager;
+
+	//Links the Pink&Blue Lights to the Player Controller
+	public GameObject pinkLight;
+	public GameObject blueLight;
 
 	//Identifies Controller Support
 	private Rigidbody rigidBody;
 	public XboxController controller;
 
+	//Invulnerability Boolean
+	[HideInInspector]
+	public bool invulnerable;
+
 	//Identifies values for Player Health and score calculation
-	public int hitPoints = 5;
-	public int maxHitPoints = 5;
+	public int hitPoints = 3;
+	public int maxHitPoints = 3;
 	public int scoreValue = 1;
+
+	//Sets a max value for Light Intensity
+	public int maxIntensity;
 
 	//Stores Max/min movement speeds
 
 	public float maxSpeed = 20;
 	public float movementSpeed = 10;
+
+	private float timePassed;
+	private float invTime = 3;
 
 	//Stored info on where the player spawns
 
@@ -44,6 +59,11 @@ public class PlayerController : MonoBehaviour {
 		//Assigns a starting position for the Players
 		startingRotation = transform.rotation;
 		startingPosition = transform.position;
+
+		//Defines what the max intensity is for the lights
+		maxIntensity = 8;
+
+		invulnerable = false;
 	}
 
 	//Used to remember previous rotation of Player
@@ -52,18 +72,29 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
+
+		timePassed += Time.deltaTime;
+		if (timePassed > invTime){
+			timePassed = 0;
+			invulnerable = false;
+		}
+
 		//Controls the constant rotation if player is presently rotating
 		RotatePlayer ();
 
 		if (hitPoints <= 0) {
 			if (this.gameObject.tag == "PinkPlayer") {
 				gameManager.GetComponent<GameController>().AddScoreBlue (scoreValue);
+				pinkLight.GetComponent<Light> ().intensity = maxIntensity;
 				ResetPlayer ();
 				hitPoints = maxHitPoints;
+				invulnerable = true;
 			} else if (this.gameObject.tag == "BluePlayer") {
 				gameManager.GetComponent<GameController>().AddScorePink (scoreValue);
+				blueLight.GetComponent<Light> ().intensity = maxIntensity;
 				ResetPlayer ();
 				hitPoints = maxHitPoints;
+				invulnerable = true;
 			}
 		}
 	}
