@@ -67,7 +67,7 @@ public class GameController : MonoBehaviour {
 	void UpdateScore () {
 
 		pinkText.text = "Pink Kills: " + pinkScore;
-		blueText.text = "Blue Kills: " + blueScore;
+		blueText.text = "Yellow Kills: " + blueScore;
 
 		BlueGameOver ();
 		PinkGameOver ();
