@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour {
 
 	//Links the Pink&Blue Lights to the Player Controller
 	public GameObject pinkLight;
-	public GameObject blueLight;
+	public GameObject yellowLight;
 
 	//Identifies Controller Support
 	private Rigidbody rigidBody;
@@ -20,6 +20,9 @@ public class PlayerController : MonoBehaviour {
 	//Invulnerability Boolean
 	[HideInInspector]
 	public bool invulnerable;
+
+//	[HideInInspector]
+//	public bool upgrade;
 
 	//Identifies values for Player Health and score calculation
 	public int hitPoints = 3;
@@ -73,6 +76,8 @@ public class PlayerController : MonoBehaviour {
 	void Update ()
 	{
 
+
+		//Calculates the amount of time that invulnerability is active for players and resets it when the timePassed is greater than the set invulnerability time
 		timePassed += Time.deltaTime;
 		if (timePassed > invTime){
 			timePassed = 0;
@@ -82,16 +87,17 @@ public class PlayerController : MonoBehaviour {
 		//Controls the constant rotation if player is presently rotating
 		RotatePlayer ();
 
+		//Respawns the player to origin point,Resets HP to max, Resets Light Intensity to max and gives them immunity to damage
 		if (hitPoints <= 0) {
 			if (this.gameObject.tag == "PinkPlayer") {
-				gameManager.GetComponent<GameController>().AddScoreBlue (scoreValue);
+				gameManager.GetComponent<GameController>().AddScoreYellow (scoreValue);
 				pinkLight.GetComponent<Light> ().intensity = maxIntensity;
 				ResetPlayer ();
 				hitPoints = maxHitPoints;
 				invulnerable = true;
-			} else if (this.gameObject.tag == "BluePlayer") {
+			} else if (this.gameObject.tag == "YellowPlayer") {
 				gameManager.GetComponent<GameController>().AddScorePink (scoreValue);
-				blueLight.GetComponent<Light> ().intensity = maxIntensity;
+				yellowLight.GetComponent<Light> ().intensity = maxIntensity;
 				ResetPlayer ();
 				hitPoints = maxHitPoints;
 				invulnerable = true;
@@ -105,7 +111,9 @@ public class PlayerController : MonoBehaviour {
 
 	private void MovePlayer (){
 
+		//Runs the Movement function if the gameOver boolean is set to false, else does nothing
 		if (gameManager.GetComponent<GameController> ().gameOver == false) {
+
 			//Allows for 360 Degrees rotation on the Left Stick on X & Z Axis'
 			float axisX = XCI.GetAxis (XboxAxis.LeftStickX, controller);
 			float axisZ = XCI.GetAxis (XboxAxis.LeftStickY, controller);
@@ -122,6 +130,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	private void RotatePlayer ()
 	{
+		//Runs the Rotation function if the gameOver boolean is set to false, else does nothing
 		if (gameManager.GetComponent<GameController> ().gameOver == false) {
 			//Allows for 360 Degrees rotation on the Right Stick on X & Y Axis'
 			float rotateAxisX = XCI.GetAxis (XboxAxis.RightStickX, controller);
@@ -148,4 +157,8 @@ public class PlayerController : MonoBehaviour {
 		GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
 		GetComponent<Rigidbody> ().velocity = Vector3.zero;
 	}
+//	void Upgrade () {
+//
+//		upgrade = true;
+//	}
 }

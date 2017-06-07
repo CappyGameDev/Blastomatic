@@ -1,20 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
 	//Used to identify visual representations of blue/pink kills
-	public GUIText blueText;
-	public GUIText pinkText;
-	public GUIText gameOverBlue;
-	public GUIText gameOverPink;
-	public GUIText restartBlue;
-	public GUIText restartPink;
+	public Text yellowText;
+	public Text pinkText;
+	public Text gameOverYellow;
+	public Text gameOverPink;
+	public Text restartYellow;
+	public Text restartPink;
 
 	//Integers to calculate kills between blue/pink scores, and sets a maximum kill count
 	private int pinkScore;
-	private int blueScore;
+	private int yellowScore;
 	private int maxScore;
 
 	//Used to specify whether the game has ended or not
@@ -22,20 +23,22 @@ public class GameController : MonoBehaviour {
 	public bool gameOver;
 
 	//Links the Blue & Pink Players to the Game Controller
-	public GameObject bluePlayer;
+	public GameObject yellowPlayer;
 	public GameObject pinkPlayer;
 
 	//Sets base gameplay values as if it were a new game
 	void Start () {
 		pinkText.text = "";
-		blueText.text = "";
-		blueScore = 0;
+		yellowText.text = "";
+		yellowScore = 0;
 		pinkScore = 0;
 		maxScore = 5;
 		UpdateScore ();
 		gameOver = false;
-		gameOverBlue.text = "";
+		gameOverYellow.text = "";
 		gameOverPink.text = "";
+		restartYellow.text = "";
+		restartPink.text = "";
 	}
 
 
@@ -56,9 +59,9 @@ public class GameController : MonoBehaviour {
 	}
 
 	// Increases blue kills by 1 when blue player kills pink player
-	public void AddScoreBlue (int newScoreValue) {
+	public void AddScoreYellow (int newScoreValue) {
 
-		blueScore += newScoreValue;
+		yellowScore += newScoreValue;
 		UpdateScore ();
 
 	}
@@ -67,23 +70,24 @@ public class GameController : MonoBehaviour {
 	void UpdateScore () {
 
 		pinkText.text = "Pink Kills: " + pinkScore;
-		blueText.text = "Yellow Kills: " + blueScore;
+		yellowText.text = "Yellow Kills: " + yellowScore;
 
-		BlueGameOver ();
+		YellowGameOver ();
 		PinkGameOver ();
 	}
 		
+	//Displays the Game Over Text indicating Yellow Win when game ends
+	public void YellowGameOver () {
 
-	public void BlueGameOver () {
-
-		if (blueScore == maxScore) {
-			gameOverBlue.text = "Game Over, Yellow Player Wins!";
-			restartBlue.text = "Press R to play again";
+		if (yellowScore == maxScore) {
+			gameOverYellow.text = "Game Over, Yellow Player Wins!";
+			restartYellow.text = "Press R to play again";
 			Debug.Log("Game Over, Yellow Player Wins");
 			gameOver = true;
 		}
 	}
 
+	//Displays Game Over Text indicating Pink Win when game ends
 	public void PinkGameOver () {
 
 		if (pinkScore == maxScore) {
