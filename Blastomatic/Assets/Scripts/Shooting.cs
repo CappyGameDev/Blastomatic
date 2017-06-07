@@ -52,6 +52,7 @@ public class Shooting : MonoBehaviour {
 		}
 
 		Debug.Log (upgradePink);
+		Debug.Log (upgradeYellow);
 
 		//References the FireGun & WeaponUpgrade functions constantly on update when Right Trigger is pressed/held down
 		FireGun ();
